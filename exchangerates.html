@@ -1,12 +1,147 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer and Currency Exchange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            color: darkgreen;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        #countdown {
+            margin-right: 20px;
+            padding: 20px;
+            border: 2px solid darkgreen;
+            flex: 1;
+        }
+        #currency {
+            padding: 20px;
+            border: 2px solid darkgreen;
+            flex: 1;
+        }
+        .line {
+            margin: 10px 0;
+        }
+        .time {
+            display: inline-block;
+            margin: 0 10px;
+        }
+    </style>
 </head>
 <body>
-<!-- START CODE Attention! Do not modify this code; --><script>var fm = "USD";var to = "USD,INR";var tz = "-8";var sz = "1x164";var lg = "en";var st = "success";var cd = 1;var am = 1</script><script src="//currencyrate.today/exchangerates"></script><div style="text-align:right"><a href="https://currencyrate.today">CurrencyRate</a></div><!-- Attention! Do not modify this code; END CODE -->
 
-<iframe src="http://free.timeanddate.com/countdown/i9fl5fdp/n886/cf100/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac090/cpc000/pcfff/tcfff/fs100/szw320/szh135/tatSo%20how%20many%20days%20to%20freedom/tac090/tptTime%20since%20Event%20started%20in/tpc000/mac090/mpc000/iso2043-06-18T00:00:00/bas3/bac090" allowtransparency="true" frameborder="0" width="326" height="141"></iframe>
+<div id="countdown">
+    <h2>Countdown Timer to June 18, 2044</h2>
+    <div id="clockdiv">
+        <div class="line">
+            <div class="time">
+                <span class="years"></span> years
+            </div>
+            <div class="time">
+                <span class="months"></span> months
+            </div>
+            <div class="time">
+                <span class="days"></span> days
+            </div>
+        </div>
+        <div class="line">
+            <div class="time">
+                <span class="hours"></span> hours
+            </div>
+            <div class="time">
+                <span class="minutes"></span> minutes
+            </div>
+            <div class="time">
+                <span class="seconds"></span> seconds
+            </div>
+        </div>
+    </div>
+</div>
 
+<div id="currency">
+    <h2>Currency Exchange Rates</h2>
+    <!-- START CODE Attention! Do not modify this code; -->
+    <script>
+        var fm = "USD";
+        var to = "USD,INR";
+        var tz = "-8";
+        var sz = "1x164";
+        var lg = "en";
+        var st = "success";
+        var cd = 1;
+        var am = 1;
+    </script>
+    <script src="//currencyrate.today/exchangerates"></script>
+    <div style="text-align: right;">
+        <a href="https://currencyrate.today">CurrencyRate</a>
+    </div>
+    <!-- Attention! Do not modify this code; END CODE -->
+</div>
 
+<script>
+    function getTimeRemaining(endtime) {
+        const total = endtime - Date.now();
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
+        
+        let remaining = total;
+        const years = Math.floor(remaining / (1000 * 60 * 60 * 24 * 365));
+        remaining = remaining % (1000 * 60 * 60 * 24 * 365);
+        
+        const months = Math.floor(remaining / (1000 * 60 * 60 * 24 * 30));
+        remaining = remaining % (1000 * 60 * 60 * 24 * 30);
+        
+        return {
+            total,
+            years,
+            months,
+            days,
+            hours,
+            minutes,
+            seconds
+        };
+    }
+
+    function initializeClock(id, endtime) {
+        const clock = document.getElementById(id);
+        const yearsSpan = clock.querySelector('.years');
+        const monthsSpan = clock.querySelector('.months');
+        const daysSpan = clock.querySelector('.days');
+        const hoursSpan = clock.querySelector('.hours');
+        const minutesSpan = clock.querySelector('.minutes');
+        const secondsSpan = clock.querySelector('.seconds');
+
+        function updateClock() {
+            const t = getTimeRemaining(endtime);
+
+            yearsSpan.innerHTML = t.years;
+            monthsSpan.innerHTML = ('0' + t.months).slice(-2);
+            daysSpan.innerHTML = ('0' + t.days).slice(-2);
+            hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
+                clock.innerHTML = "Time's up!";
+            }
+        }
+
+        updateClock();
+        const timeinterval = setInterval(updateClock, 1000);
+    }
+
+    // Set the deadline to June 18, 2044 00:00:00 UTC
+    const deadline = new Date('June 18, 2044 00:00:00 UTC');
+    initializeClock('clockdiv', deadline);
+</script>
 
 </body>
 </html>
